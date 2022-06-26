@@ -1,0 +1,3 @@
+selector:
+  - '#rso > div:not(.g) > div:not(.g, .jtfYYd)' # comment
+  - .g
