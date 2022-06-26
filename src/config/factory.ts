@@ -54,7 +54,7 @@ export class ConfigFactory {
 
         return ObjectConfig.generate(selector, propConfigs);
       case 'array':
-        return ArrayConfig.generate(selector, items, transform);
+        return ArrayConfig.generate(selector, this.generate(items), transform);
       case 'union':
         return UnionConfig.generate(union.map(cfg => this.generate(cfg)));
       default:

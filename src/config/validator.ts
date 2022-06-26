@@ -145,7 +145,7 @@ export class ConfigValidator {
       return;
     }
 
-    const validator = new ConfigValidator(this.meta.plain, `${path}.items`);
+    const validator = new ConfigValidator(this.meta.plain.items, `${path}.items`);
 
     validator.validate();
   }
