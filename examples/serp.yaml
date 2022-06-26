@@ -1,3 +1,10 @@
 selector:
   - '#rso > div:not(.g) > div:not(.g, .jtfYYd)' # comment
   - .g
+
+items:
+  union:
+    # regular result
+    - selector: .tF2Cxc
+      properties:
+        title: { selector: h3 }
