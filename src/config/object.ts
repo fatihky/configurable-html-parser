@@ -1,5 +1,5 @@
 import { Config } from './config';
-import ConfigWithSelector from './with-selector';
+import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export class ObjectConfig extends ConfigWithSelector {
   properties: {
@@ -10,8 +10,8 @@ export class ObjectConfig extends ConfigWithSelector {
     super();
   }
 
-  extract($: cheerio.Root, $parent:  cheerio.Cheerio) {
-    let $el = this.getSelectorMatches($parent);
+  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
+    let $el = this.getSelectorMatches($parent, (opts && opts.elementAlreadyMatched) || false);
 
     if ($el.length === 0) {
       return null;

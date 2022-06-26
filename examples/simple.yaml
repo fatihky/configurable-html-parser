@@ -15,3 +15,6 @@ properties:
     union:
       - selector: .first
       - selector: .second
+      - selector:
+        - .third
+        - .fourth

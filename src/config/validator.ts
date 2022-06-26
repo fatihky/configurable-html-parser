@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { has } from 'cheerio/lib/api/traversing';
 import { argTypeToStr } from '../core/argument-types';
 import { Transformer } from '../core/transformer';
 import { Transformers } from '../transformers';
@@ -44,12 +43,14 @@ export class ConfigValidator {
     };
   }
 
-  validate(path = this.meta.path) {
+  validate() {
+    const path = this.meta.path;
+
     if (this.meta.has.union) {
       return this.validateUnion(`${path}.union`);
     }
 
-    this.validateSelector();
+    this.validateSelector(`${path}.selector`);
     this.validateTransform(path);
     this.validateProperties(path);
     this.validateItems(path);
@@ -57,9 +58,30 @@ export class ConfigValidator {
     this.validateType(path);
   }
 
-  private validateSelector() {
+  private validateSelector(path: string) {
+    let { selector } = this.meta.plain;
+
     if (!this.meta.has.selector) {
-      throw new Error(this.prefixPath(this.meta.path, '"selector" property cannot be undefined or empty'));
+      throw new Error(this.prefixPath(path, 'must be defined'));
+    }
+
+    if (typeof selector === 'string') {
+      if (selector === '') {
+        throw new Error(this.prefixPath(path, 'must not be empty'));
+      }
+
+      return;
+    }
+
+    if (Array.isArray(selector)) {
+      selector.forEach((s, i) => {
+        const spath = `${path}[${i}]`;
+
+        assert(typeof s === 'string', this.prefixPath(spath, 'must be a string'));
+        assert(s !== '', this.prefixPath(spath, 'must not be empty'));
+      });
+
+      return;
     }
   }
 

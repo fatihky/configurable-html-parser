@@ -1,6 +1,6 @@
-import { Config } from './config';
+import { Config, ExtractParams } from './config';
 import { PrimitiveValueConfig, Transform } from './primitive';
-import ConfigWithSelector, { SELECTOR_SELF } from './with-selector';
+import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export class ArrayConfig extends ConfigWithSelector {
   transform?: Transform
@@ -11,13 +11,16 @@ export class ArrayConfig extends ConfigWithSelector {
   }
 
   extract($: cheerio.Root, $parent:  cheerio.Cheerio) {
-    const $el = this.getSelectorMatches($parent);
-    let conf = this.items || PrimitiveValueConfig.generate(SELECTOR_SELF, this.transform);
+    const $el = this.getSelectorMatches($parent, false);
+    let conf = this.items || PrimitiveValueConfig.generate('', this.transform);
+    const extractOpts = conf instanceof ConfigWithSelector
+      ? { elementAlreadyMatched: true } as ConfigWithSelectorExtractParams
+      : {} as ExtractParams;
 
     return $el
       .toArray()
       .map((el) => {
-        return conf.extract($, $(el))
+        return conf.extract($, $(el), extractOpts);
       });
   }
 

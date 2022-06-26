@@ -1,16 +1,16 @@
-import { Config } from './config';
+import { Config, ExtractParams } from './config';
 
-export const SELECTOR_SELF = '';
+export interface ConfigWithSelectorExtractParams extends ExtractParams {
+  elementAlreadyMatched?: boolean
+}
 
 export default abstract class ConfigWithSelector extends Config {
   protected selector: string;
 
-  getSelector() {
-    return this.selector;
-  }
+  abstract extract($: cheerio.Root, $el: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams): any;
 
-  protected getSelectorMatches($: cheerio.Cheerio): cheerio.Cheerio {
-    if (this.selector === SELECTOR_SELF) {
+  getSelectorMatches($: cheerio.Cheerio, alreadyMatched: boolean): cheerio.Cheerio {
+    if (alreadyMatched) {
       return $;
     }
 

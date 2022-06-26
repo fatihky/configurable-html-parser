@@ -19,13 +19,17 @@ export class ConfigFactory {
     validator.validate();
 
     const {
-      selector,
+      selector: selectorOrig,
       type,
       transform,
       properties,
       items,
       union,
     } = plain;
+
+    const selector = Array.isArray(selectorOrig)
+      ? selectorOrig.join(', ')
+      : selectorOrig;
 
     const expectedType =
       (properties || type === 'object')

@@ -1,7 +1,6 @@
 import { Transformer } from '../core/transformer';
 import { Transformers } from '../transformers';
-import { Config } from './config'
-import ConfigWithSelector from './with-selector';
+import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export type Transform = (string | Transformer) | (string | Transformer)[]
 
@@ -12,9 +11,9 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
     super();
   }
 
-  extract($: cheerio.Root, $parent:  cheerio.Cheerio) {
+  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
     let val: any = null;
-    let $el = this.getSelectorMatches($parent);
+    let $el = this.getSelectorMatches($parent, (opts && opts.elementAlreadyMatched) || false);
 
     if ($el.length > 0) {
       val = $el.text();
