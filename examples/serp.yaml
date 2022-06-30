@@ -11,4 +11,4 @@ items:
     - selector: $self
       properties:
         html: { selector: $self, transform: html }
-        type: { const: non-matched }
+        type: { constant: non-matched }
