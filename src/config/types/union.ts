@@ -1,5 +1,5 @@
-import { Config, ExtractParams } from './config';
-import ConfigWithSelector from './with-selector';
+import { Config } from '../config';
+import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export default class UnionConfig extends Config {
   private constructor(
@@ -8,7 +8,7 @@ export default class UnionConfig extends Config {
     super();
   }
 
-  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ExtractParams) {
+  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
     for (const config of this.configs) {
       const $el = config.getSelectorMatches($parent, false);
 

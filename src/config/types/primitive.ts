@@ -1,5 +1,5 @@
-import { Transformer } from '../core/transformer';
-import { Transformers } from '../transformers';
+import { Transformer } from '../../core/transformer';
+import { Transformers } from '../../transformers';
 import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export type Transform = (string | Transformer) | (string | Transformer)[]

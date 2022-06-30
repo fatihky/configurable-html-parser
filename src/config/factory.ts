@@ -1,9 +1,9 @@
 import { parse } from 'yaml';
-import { ArrayConfig } from './array';
+import { ArrayConfig } from './types/array';
 import { Config } from './config';
-import { ObjectConfig } from './object';
-import { PrimitiveValueConfig } from './primitive';
-import UnionConfig from './union';
+import { ObjectConfig } from './types/object';
+import { PrimitiveValueConfig } from './types/primitive';
+import UnionConfig from './types/union';
 import { ConfigValidator } from './validator';
 
 export class ConfigFactory {
@@ -54,7 +54,7 @@ export class ConfigFactory {
 
         return ObjectConfig.generate(selector, propConfigs);
       case 'array':
-        return ArrayConfig.generate(selector, this.generate(items), transform);
+        return ArrayConfig.generate(selector, items && this.generate(items), transform);
       case 'union':
         return UnionConfig.generate(union.map(cfg => this.generate(cfg)));
       default:

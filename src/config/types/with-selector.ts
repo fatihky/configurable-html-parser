@@ -1,4 +1,4 @@
-import { Config, ExtractParams } from './config';
+import { Config, ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
   elementAlreadyMatched?: boolean

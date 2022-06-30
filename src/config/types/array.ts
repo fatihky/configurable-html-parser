@@ -1,4 +1,4 @@
-import { Config, ExtractParams } from './config';
+import { Config, ExtractParams } from '../config';
 import { PrimitiveValueConfig, Transform } from './primitive';
 import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
