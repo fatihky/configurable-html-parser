@@ -1,3 +1,4 @@
+import { SELECTOR_SELF } from '../../constants';
 import { Config, ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
@@ -11,6 +12,10 @@ export default abstract class ConfigWithSelector extends Config {
 
   getSelectorMatches($: cheerio.Cheerio, alreadyMatched: boolean): cheerio.Cheerio {
     if (alreadyMatched) {
+      return $;
+    }
+
+    if (this.selector === SELECTOR_SELF) {
       return $;
     }
 

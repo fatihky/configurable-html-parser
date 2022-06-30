@@ -129,5 +129,15 @@ export const schema: SomeJSONSchema = {
       required: ['union'],
       additionalProperties: false,
     },
+
+    {
+      $comment: 'Constant',
+      type: 'object',
+      properties: {
+        constant: {},
+      },
+      required: ['constant'],
+      additionalProperties: false,
+    },
   ],
 };

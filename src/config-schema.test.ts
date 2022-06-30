@@ -131,3 +131,25 @@ describe('Transform', () => {
     expect({ selector: '.foo', transform: [] }).not.toBeValidConfig();
   });
 });
+
+describe('Constant', () => {
+  it('String', () => {
+    expect({ constant: 'foo' }).toBeValidConfig();
+  });
+
+  it('Number', () => {
+    expect({ constant: 123 }).toBeValidConfig();
+  });
+
+  it('Boolean', () => {
+    expect({ constant: true }).toBeValidConfig();
+  });
+
+  it('Object', () => {
+    expect({ constant: { foo: 'bar' } }).toBeValidConfig();
+  });
+
+  it('Array', () => {
+    expect({ constant: [ 'foo' ] }).toBeValidConfig();
+  });
+});
