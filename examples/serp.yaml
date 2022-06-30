@@ -8,3 +8,7 @@ items:
     - selector: .tF2Cxc
       properties:
         title: { selector: h3 }
+    - selector: $self
+      properties:
+        html: { selector: $self, transform: html }
+        type: { const: non-matched }
