@@ -25,6 +25,21 @@ describe('Base', () => {
   );
 });
 
+describe('Selector', () => {
+  it('MustBeStringOrStringArray', () => {
+    expect({ selector: 123 }).not.toBeValidConfig();
+    expect({ selector: true }).not.toBeValidConfig();
+    expect({ selector: {} }).not.toBeValidConfig();
+    expect({ selector: '.foo' }).toBeValidConfig();
+    expect({ selector: ['.foo'] }).toBeValidConfig();
+  });
+
+  it('CannotBeEmpty', () => {
+    expect({ selector: '' }).not.toBeValidConfig();
+    expect({ selector: [] }).not.toBeValidConfig();
+  });
+});
+
 describe('String', () => {
   it('Selector', () => expect({ selector: '.foo' }).toBeValidConfig());
 });
