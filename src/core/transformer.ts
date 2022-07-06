@@ -1,7 +1,9 @@
 import { PrimitiveTypes } from './primitive-types';
 
 export abstract class Transformer {
-  abstract getName(): string
+  static getName(): string {
+    throw new Error('Not implemented');
+  }
 
   abstract inputType(): PrimitiveTypes
 

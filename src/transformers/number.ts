@@ -2,7 +2,7 @@ import { NUMBER, PrimitiveTypes, STRING } from '../core/primitive-types';
 import { Transformer } from '../core/transformer';
 
 export default class NumberTransformer extends Transformer {
-  getName(): string {
+  static getName(): string {
     return 'number';
   }
 

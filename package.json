@@ -2,7 +2,7 @@
   "name": "configurable-html-parser",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc --noEmit && tsup",
     "build:fast": "tsup",

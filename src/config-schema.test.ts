@@ -134,10 +134,6 @@ describe('Transform', () => {
     expect({ selector: '.foo', transform: 'length' }).toBeValidConfig();
   });
 
-  it('FailOnInvalidTransformer', () => {
-    expect({ selector: '.foo', transform: 'invalid' }).not.toBeValidConfig();
-  });
-
   it('AllowStringArray', () => {
     expect({ selector: '.foo', transform: ['length', 'trim'] }).toBeValidConfig();
   });

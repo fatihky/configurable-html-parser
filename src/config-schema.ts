@@ -1,7 +1,5 @@
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
-import { Transformers } from './transformers';
-
-const validTransformers = Transformers.transformers.map(tr => tr.getName());
+import { TRANSFORMER_DEFINITION_REGEX } from './transformers/factory';
 
 export const schema: SomeJSONSchema = {
   type: 'object',
@@ -24,7 +22,7 @@ export const schema: SomeJSONSchema = {
           type: 'string',
           enum: ['string', 'object', 'array', 'union'],
         },
-        items: { $ref: '#/' },
+        items: { $ref: '#/' } as any,
         properties: {
           type: 'object',
           additionalProperties: {
@@ -34,12 +32,12 @@ export const schema: SomeJSONSchema = {
         transform: {
           oneOf: [{
             type: 'string',
-            enum: validTransformers,
+            pattern: TRANSFORMER_DEFINITION_REGEX,
           }, {
             type: 'array',
             items: {
               type: 'string',
-              enum: validTransformers,
+              pattern: TRANSFORMER_DEFINITION_REGEX,
             },
             minItems: 1,
           }],
@@ -131,7 +129,7 @@ export const schema: SomeJSONSchema = {
           type: 'array',
           items: {
             $ref: '#/',
-          },
+          } as any,
           minItems: 1,
         },
       },
@@ -143,7 +141,7 @@ export const schema: SomeJSONSchema = {
       $comment: 'Constant',
       type: 'object',
       properties: {
-        constant: {},
+        constant: {} as any,
       },
       required: ['constant'],
       additionalProperties: false,

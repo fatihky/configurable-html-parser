@@ -2,7 +2,7 @@ import { PrimitiveTypes, STRING } from "../core/primitive-types";
 import { Transformer } from "../core/transformer";
 
 export default class HTMLTransformer extends Transformer {
-  getName(): string {
+  static getName(): string {
     return 'html';
   }
 

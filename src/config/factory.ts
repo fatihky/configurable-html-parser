@@ -6,6 +6,8 @@ import { PrimitiveValueConfig } from './types/primitive';
 import UnionConfig from './types/union';
 import { ConfigValidator } from './validator';
 import ConstantConfig from './types/constant';
+import { Transformer } from '../core/transformer';
+import { TransformerFactory } from '../transformers/factory';
 
 export class ConfigFactory {
   static fromYAML(yaml: string): Config {
@@ -26,7 +28,7 @@ export class ConfigFactory {
       constant,
       selector: selectorOrig,
       type,
-      transform,
+      transform: transformOrig,
       properties,
       items,
       union,
@@ -46,7 +48,8 @@ export class ConfigFactory {
           : constant
             ? 'constant'
             : 'primitive';
-
+    const transform = transformOrig && ConfigFactory.generateTransform(transformOrig);
+ 
     switch (expectedType) {
       case 'constant':
         return ConstantConfig.generate(constant);
@@ -69,5 +72,15 @@ export class ConfigFactory {
       default:
         return PrimitiveValueConfig.generate(selector, transform);
     }
+  }
+
+  private static generateTransform(transform: string | string[]): Transformer | Transformer[] {
+    if (typeof transform === 'string') {
+      return TransformerFactory.create(transform);
+    }
+
+    return transform.map((tr: string) => {
+      return TransformerFactory.create(tr);
+    });
   }
 }

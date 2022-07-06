@@ -2,7 +2,7 @@ import { BOOLEAN, PrimitiveTypes, STRING } from '../core/primitive-types';
 import { Transformer } from '../core/transformer';
 
 export default class Exists extends Transformer {
-  getName(): string {
+  static getName(): string {
     return 'exists';
   }
 

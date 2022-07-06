@@ -1,3 +1,4 @@
+import AttributeTransformer from './attr';
 import ExistsTransformer from './exists';
 import HTMLTransformer from './html';
 import LengthTransformer from './length';
@@ -7,12 +8,13 @@ import TrimTransformer from './trim';
 
 export class Transformers {
   static readonly transformers = [
-    new ExistsTransformer(),
-    new HTMLTransformer(),
-    new LengthTransformer(),
-    new MatchCountTransformer(),
-    new NumberTransformer(),
-    new TrimTransformer(),
+    ExistsTransformer,
+    HTMLTransformer,
+    LengthTransformer,
+    MatchCountTransformer,
+    NumberTransformer,
+    TrimTransformer,
+    AttributeTransformer,
   ];
 
   static getByName(name: string) {

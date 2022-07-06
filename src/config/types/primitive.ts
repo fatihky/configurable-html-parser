@@ -1,8 +1,7 @@
 import { Transformer } from '../../core/transformer';
-import { Transformers } from '../../transformers';
 import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
-export type Transform = (string | Transformer) | (string | Transformer)[]
+export type Transform = Transformer | Transformer[]
 
 export class PrimitiveValueConfig extends ConfigWithSelector {
   private transform?: Transform;
@@ -40,16 +39,6 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
 
   protected transformVal(transformer: Transform, val: any, $el: cheerio.Cheerio) {
     let transform = transformer;
-
-    if (typeof transform === 'string') {
-      const found = Transformers.getByName(transform);
-
-      if (!found) {
-        throw new Error(`Transformer ${transform} is not found!`);
-      }
-
-      transform = found;
-    }
 
     if (transform instanceof Transformer) {
       return transform.transform(val, $el);
