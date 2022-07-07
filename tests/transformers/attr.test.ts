@@ -22,7 +22,7 @@ describe('AttrTransformer', () => {
 
   beforeAll(() => {
     $ = load(SAMPLE);
-    $el = $('*');
+    $el = $.root();
   });
 
   it('ReturnAttributeValue', () => {

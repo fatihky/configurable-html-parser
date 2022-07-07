@@ -11,7 +11,7 @@ describe('HTML', () => {
   it('CorrectlyExtractHTML', () => {
     const $ = load(readFileSync('tests/fixtures/basic.html').toString());
     const config = ConfigFactory.fromYAML(yaml);
-    const result = config.extract($, $('*'));
+    const result = config.extract($, $.root());
     const expected = $('.foo').html();
   
     expect(result).toBe(expected);

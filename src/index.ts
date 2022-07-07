@@ -10,5 +10,5 @@ export function extract($: cheerio.Root | string, config: Config): any {
     $root = load($root);
   }
 
-  return config.extract($root, $root('*'));
+  return config.extract($root, $root.root());
 }

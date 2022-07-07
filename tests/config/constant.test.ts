@@ -9,7 +9,7 @@ describe('ConstantConfig', () => {
   it('Basic', () => {
     const $ = load('');
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $(''));
+    const result = conf.extract($, $.root());
     const expected = 'foo';
   
     expect(result).toBe(expected);
