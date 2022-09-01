@@ -8,6 +8,7 @@ import { ConfigValidator } from './validator';
 import ConstantConfig from './types/constant';
 import { Transformer } from '../core/transformer';
 import { TransformerFactory } from '../transformers/factory';
+import ConfigWithSelector from './types/with-selector';
 
 export class ConfigFactory {
   static fromYAML(yaml: string): Config {
@@ -21,34 +22,27 @@ export class ConfigFactory {
     const errors = validator.validate();
 
     if (errors) {
-      throw new Error(`Invalid config provided. Got validation errors: ${JSON.stringify(errors)}`);
+      throw new Error(
+        `Invalid config provided. Got validation errors: ${JSON.stringify(
+          errors
+        )}`
+      );
     }
 
     const {
       constant,
       selector: selectorOrig,
-      type,
       transform: transformOrig,
       properties,
       items,
       union,
     } = plain;
 
-    const selector = Array.isArray(selectorOrig)
-      ? selectorOrig.join(', ')
-      : (selectorOrig || null);
+    const selector = ConfigFactory.generateSelector(selectorOrig);
 
-    const expectedType =
-      (properties || type === 'object')
-      ? 'object'
-      : (items || type === 'array')
-        ? 'array'
-        : union
-          ? 'union'
-          : constant
-            ? 'constant'
-            : 'primitive';
-    const transform = transformOrig && ConfigFactory.generateTransform(transformOrig);
+    const expectedType = ConfigFactory.detectExpectedType(plain);
+    const transform =
+      transformOrig && ConfigFactory.generateTransform(transformOrig);
 
     switch (expectedType) {
       case 'constant':
@@ -66,15 +60,50 @@ export class ConfigFactory {
 
         return ObjectConfig.generate(selector, propConfigs);
       case 'array':
-        return ArrayConfig.generate(selector, items && this.generate(items), transform);
+        return ArrayConfig.generate(
+          selector,
+          items && this.generate(items),
+          transform
+        );
       case 'union':
-        return UnionConfig.generate(union.map(cfg => this.generate(cfg)));
+        return UnionConfig.generate(union.map((cfg) => this.generate(cfg)));
       default:
         return PrimitiveValueConfig.generate(selector, transform);
     }
   }
 
-  private static generateTransform(transform: string | string[]): Transformer | Transformer[] {
+  private static generateSelector(
+    selector: any
+  ): ConfigWithSelector['selector'] {
+    if (typeof selector === 'string') {
+      return selector || null;
+    }
+
+    if (Array.isArray(selector)) {
+      const joined = selector
+        .map((s) => ConfigFactory.generateSelector(s))
+        .filter((s) => typeof s === 'string')
+        .join(', ');
+
+      return ConfigFactory.generateSelector(joined);
+    }
+
+    if (typeof selector === 'object') {
+      const { selector: nselector } = selector;
+
+      return ConfigFactory.generateSelector(nselector);
+    }
+
+    if (typeof selector === 'undefined') {
+      return null;
+    }
+
+    throw new Error(`Unexpected selector type: ${typeof selector}. Selector: ${JSON.stringify(selector)}`);
+  }
+
+  private static generateTransform(
+    transform: string | string[]
+  ): Transformer | Transformer[] {
     if (typeof transform === 'string') {
       return TransformerFactory.create(transform);
     }
@@ -82,5 +111,25 @@ export class ConfigFactory {
     return transform.map((tr: string) => {
       return TransformerFactory.create(tr);
     });
+  }
+
+  private static detectExpectedType(conf: { [key: string]: any }) {
+    if (conf.hasOwnProperty('properties') || conf.type === 'object') {
+      return 'object';
+    }
+
+    if (conf.hasOwnProperty('items') || conf.type === 'array') {
+      return 'array';
+    }
+
+    if (conf.hasOwnProperty('union')) {
+      return 'union';
+    }
+
+    if (conf.hasOwnProperty('constant')) {
+      return 'constant';
+    }
+
+    return 'primitive';
   }
 }

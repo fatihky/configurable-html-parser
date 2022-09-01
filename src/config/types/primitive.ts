@@ -26,7 +26,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
   }
 
   static generate(
-    selector: string,
+    selector: ConfigWithSelector['selector'],
     transform?: Transform
   ) {
     const conf = new PrimitiveValueConfig()

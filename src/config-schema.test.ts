@@ -6,17 +6,58 @@ describe('Base', () => {
 });
 
 describe('Selector', () => {
-  it('MustBeStringOrStringArray', () => {
-    expect({ selector: 123 }).not.toBeValidConfig();
-    expect({ selector: true }).not.toBeValidConfig();
-    expect({ selector: {} }).not.toBeValidConfig();
+  it('CanBeString', () => {
     expect({ selector: '.foo' }).toBeValidConfig();
+  });
+
+  it('CanBeStringArray', () => {
     expect({ selector: ['.foo'] }).toBeValidConfig();
+  });
+
+  it('CanBeSelectorWithSampleHTMLs', () => {
+    expect({
+      selector: {
+        selector: 'some selector',
+        sampleHTMLs: []
+      }
+    }).toBeValidConfig();
+
+    expect({
+      selector: {
+        selector: 'some selector',
+        sampleHTMLs: ['tests/fixtures/sample.html']
+      }
+    }).toBeValidConfig();
+
+    expect({
+      selector: {
+        sampleHTMLs: []
+      }
+    }).toBeValidConfig();
+
+    expect({
+      selector: {},
+    }).toBeValidConfig();
+
+    expect({
+      selector: {
+        selector: '.foo'
+      },
+    }).toBeValidConfig();
+  });
+
+  it('CanBeFullyEmpty', () => {
+    expect({ selector: {} }).toBeValidConfig();
   });
 
   it('CannotBeEmpty', () => {
     expect({ selector: '' }).not.toBeValidConfig();
     expect({ selector: [] }).not.toBeValidConfig();
+  });
+
+  it('ForbidInvalidValues', () => {
+    expect({ selector: 123 }).not.toBeValidConfig();
+    expect({ selector: true }).not.toBeValidConfig();
   });
 });
 

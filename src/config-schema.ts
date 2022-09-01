@@ -1,6 +1,42 @@
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
 import { TRANSFORMER_DEFINITION_REGEX } from './transformers/factory';
 
+const selectorWithSampleHTMLs: SomeJSONSchema = {
+  type: 'object',
+  properties: {
+    selector: { type: 'string' },
+    sampleHTMLs: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
+  },
+  required: [],
+};
+
+const selectorSchema = {
+  oneOf: [
+    {
+      type: 'string',
+      minLength: 1,
+    },
+    {
+      type: 'array',
+      items: {
+        oneOf: [
+          {
+            type: 'string',
+          },
+          selectorWithSampleHTMLs,
+        ],
+      },
+      minItems: 1,
+    },
+    selectorWithSampleHTMLs,
+  ],
+};
+
 export const schema: SomeJSONSchema = {
   type: 'object',
   required: [],
@@ -8,16 +44,7 @@ export const schema: SomeJSONSchema = {
     {
       $comment: 'WithSelector',
       properties: {
-        selector: {
-          oneOf: [{
-            type: 'string',
-            minLength: 1
-          }, {
-            type: 'array',
-            items: { type: 'string', minLength: 1 },
-            minItems: 1
-          }]
-        },
+        selector: selectorSchema,
         type: {
           type: 'string',
           enum: ['string', 'object', 'array', 'union'],
@@ -30,24 +57,28 @@ export const schema: SomeJSONSchema = {
           },
         },
         transform: {
-          oneOf: [{
-            type: 'string',
-            pattern: TRANSFORMER_DEFINITION_REGEX,
-          }, {
-            type: 'array',
-            items: {
+          oneOf: [
+            {
               type: 'string',
               pattern: TRANSFORMER_DEFINITION_REGEX,
             },
-            minItems: 1,
-          }],
+            {
+              type: 'array',
+              items: {
+                type: 'string',
+                pattern: TRANSFORMER_DEFINITION_REGEX,
+              },
+              minItems: 1,
+            },
+          ],
         },
       },
       required: [],
       additionalProperties: false,
       allOf: [
         {
-          $comment: 'when the "properties" present, "type" can only be "object" or not defined at all',
+          $comment:
+            'when the "properties" present, "type" can only be "object" or not defined at all',
           if: {
             required: ['properties'],
           },
@@ -58,7 +89,8 @@ export const schema: SomeJSONSchema = {
           },
         },
         {
-          $comment: 'when the "type" is "object", then the "properties" MUST be defined.',
+          $comment:
+            'when the "type" is "object", then the "properties" MUST be defined.',
           if: {
             properties: {
               type: { const: 'object' },
@@ -70,29 +102,36 @@ export const schema: SomeJSONSchema = {
           },
         },
         {
-          $comment: "objects cannot have transform",
+          $comment: 'objects cannot have transform',
           if: {
-            anyOf: [{
-              properties: {
-                type: { const: 'object' },
+            anyOf: [
+              {
+                properties: {
+                  type: { const: 'object' },
+                },
+                required: ['type'],
               },
-              required: ['type'],
-            }, {
-              required: ['properties']
-            }]
+              {
+                required: ['properties'],
+              },
+            ],
           },
           then: {
-            allOf: [{
-              required: ['properties'],
-            }, {
-              not: {
-                required: ['transform']
-              }
-            }]
-          }
+            allOf: [
+              {
+                required: ['properties'],
+              },
+              {
+                not: {
+                  required: ['transform'],
+                },
+              },
+            ],
+          },
         },
         {
-          $comment: 'when the "items" present, "type" can only be "array" or not defined at all',
+          $comment:
+            'when the "items" present, "type" can only be "array" or not defined at all',
           if: {
             required: ['items'],
           },
@@ -103,7 +142,8 @@ export const schema: SomeJSONSchema = {
           },
         },
         {
-          $comment: 'when the "type" is "array", then the "properties" MUST be defined.',
+          $comment:
+            'when the "type" is "array", then the "properties" MUST be defined.',
           if: {
             properties: {
               type: { const: 'array' },
@@ -111,11 +151,14 @@ export const schema: SomeJSONSchema = {
             required: ['type'],
           },
           then: {
-            oneOf: [{
-              required: ['items']
-            }, {
-              required: ['transform']
-            }]
+            oneOf: [
+              {
+                required: ['items'],
+              },
+              {
+                required: ['transform'],
+              },
+            ],
           },
         },
       ],

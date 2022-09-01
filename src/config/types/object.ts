@@ -30,7 +30,7 @@ export class ObjectConfig extends ConfigWithSelector {
   }
 
   static generate(
-    selector: string,
+    selector: ConfigWithSelector['selector'],
     properties?: ObjectConfig["properties"]
   ): ObjectConfig {
     const conf = new ObjectConfig()
