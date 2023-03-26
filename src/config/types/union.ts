@@ -1,14 +1,18 @@
 import { Config } from '../config';
-import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
+import ConfigWithSelector, {
+  ConfigWithSelectorExtractParams,
+} from './with-selector';
 
 export default class UnionConfig extends Config {
-  private constructor(
-    private readonly configs: ConfigWithSelector[]
-  ) {
+  private constructor(private readonly configs: ConfigWithSelector[]) {
     super();
   }
 
-  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
+  extract(
+    $: cheerio.Root,
+    $parent: cheerio.Cheerio,
+    opts?: ConfigWithSelectorExtractParams
+  ) {
     for (const config of this.configs) {
       const $el = config.getSelectorMatches($parent, false);
 
@@ -16,13 +20,16 @@ export default class UnionConfig extends Config {
         continue;
       }
 
-      return config.extract($, $el, { ...(opts ? opts : {}), elementAlreadyMatched: true });
+      return config.extract($, $el, {
+        ...(opts ? opts : {}),
+        elementAlreadyMatched: true,
+      });
     }
 
     return null;
   }
 
-  static generate(configs: []) {
+  static generate(configs: ConfigWithSelector[]) {
     return new UnionConfig(configs);
   }
 }

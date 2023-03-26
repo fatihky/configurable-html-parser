@@ -1,17 +1,26 @@
 import { Config } from '../config';
-import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
+import ConfigWithSelector, {
+  ConfigWithSelectorExtractParams,
+} from './with-selector';
 
 export class ObjectConfig extends ConfigWithSelector {
   properties: {
-    [key: string]: Config
+    [key: string]: Config;
   } = {};
 
   private constructor() {
     super();
   }
 
-  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
-    let $el = this.getSelectorMatches($parent, (opts && opts.elementAlreadyMatched) || false);
+  extract(
+    $: cheerio.Root,
+    $parent: cheerio.Cheerio,
+    opts?: ConfigWithSelectorExtractParams
+  ) {
+    let $el = this.getSelectorMatches(
+      $parent,
+      (opts && opts.elementAlreadyMatched) || false
+    );
 
     if ($el.length === 0) {
       return null;
@@ -26,14 +35,14 @@ export class ObjectConfig extends ConfigWithSelector {
       acc[key] = config.extract($, $el);
 
       return acc;
-    }, {});
+    }, {} as Record<string, any>);
   }
 
   static generate(
     selector: ConfigWithSelector['selector'],
-    properties?: ObjectConfig["properties"]
+    properties?: ObjectConfig['properties']
   ): ObjectConfig {
-    const conf = new ObjectConfig()
+    const conf = new ObjectConfig();
 
     conf.selector = selector;
 
@@ -41,6 +50,6 @@ export class ObjectConfig extends ConfigWithSelector {
       conf.properties = properties;
     }
 
-    return conf
+    return conf;
   }
 }

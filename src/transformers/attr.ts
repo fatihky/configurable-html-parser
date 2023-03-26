@@ -1,13 +1,13 @@
-import { STRING } from "../core/primitive-types";
-import { Transformer } from "../core/transformer";
+import { STRING } from '../core/primitive-types';
+import { Transformer } from '../core/transformer';
 
 export default class AttributeTransformer extends Transformer {
   constructor(private readonly args: string[]) {
-    super()
+    super();
   }
 
   static getName(): string {
-    return 'attr'
+    return 'attr';
   }
 
   inputType(): typeof STRING {
@@ -20,7 +20,7 @@ export default class AttributeTransformer extends Transformer {
 
   transform(val: any, $el: cheerio.Cheerio): any {
     const { args } = this;
-    
+
     switch (args.length) {
       case 0:
         return $el.attr();
@@ -31,11 +31,14 @@ export default class AttributeTransformer extends Transformer {
           acc[arg] = AttributeTransformer.getAttrValue($el, arg);
 
           return acc;
-        }, {});
+        }, {} as Record<string, unknown>);
     }
   }
 
-  private static getAttrValue($el: cheerio.Cheerio, attr: string): string | null {
+  private static getAttrValue(
+    $el: cheerio.Cheerio,
+    attr: string
+  ): string | null {
     const val = $el.attr(attr);
 
     if (val === undefined) {

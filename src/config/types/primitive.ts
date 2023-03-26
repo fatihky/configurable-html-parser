@@ -1,7 +1,9 @@
 import { Transformer } from '../../core/transformer';
-import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
+import ConfigWithSelector, {
+  ConfigWithSelectorExtractParams,
+} from './with-selector';
 
-export type Transform = Transformer | Transformer[]
+export type Transform = Transformer | Transformer[];
 
 export class PrimitiveValueConfig extends ConfigWithSelector {
   private transform?: Transform;
@@ -10,9 +12,16 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
     super();
   }
 
-  extract(_$: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
+  extract(
+    _$: cheerio.Root,
+    $parent: cheerio.Cheerio,
+    opts?: ConfigWithSelectorExtractParams
+  ) {
     let val: any = null;
-    let $el = this.getSelectorMatches($parent, (opts && opts.elementAlreadyMatched) || false);
+    let $el = this.getSelectorMatches(
+      $parent,
+      (opts && opts.elementAlreadyMatched) || false
+    );
 
     if ($el.length > 0) {
       val = $el.text();
@@ -29,15 +38,19 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
     selector: ConfigWithSelector['selector'],
     transform?: Transform
   ) {
-    const conf = new PrimitiveValueConfig()
+    const conf = new PrimitiveValueConfig();
 
     conf.selector = selector;
     conf.transform = transform;
 
-    return conf
+    return conf;
   }
 
-  protected transformVal(transformer: Transform, val: any, $el: cheerio.Cheerio) {
+  protected transformVal(
+    transformer: Transform,
+    val: any,
+    $el: cheerio.Cheerio
+  ): any {
     let transform = transformer;
 
     if (transform instanceof Transformer) {

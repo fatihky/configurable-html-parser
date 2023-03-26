@@ -9,6 +9,7 @@ import ConstantConfig from './types/constant';
 import { Transformer } from '../core/transformer';
 import { TransformerFactory } from '../transformers/factory';
 import ConfigWithSelector from './types/with-selector';
+import { PlainConfigObject, PlainConfigSelector } from './plain-config';
 
 export class ConfigFactory {
   static fromYAML(yaml: string): Config {
@@ -17,7 +18,7 @@ export class ConfigFactory {
     return this.generate(plain);
   }
 
-  private static generate(plain: any): Config {
+  private static generate(plain: PlainConfigObject): Config {
     const validator = new ConfigValidator(plain);
     const errors = validator.validate();
 
@@ -41,8 +42,9 @@ export class ConfigFactory {
     const selector = ConfigFactory.generateSelector(selectorOrig);
 
     const expectedType = ConfigFactory.detectExpectedType(plain);
-    const transform =
-      transformOrig && ConfigFactory.generateTransform(transformOrig);
+    const transform = transformOrig
+      ? ConfigFactory.generateTransform(transformOrig)
+      : undefined;
 
     switch (expectedType) {
       case 'constant':
@@ -55,7 +57,7 @@ export class ConfigFactory {
             acc[key] = this.generate(properties[key]);
 
             return acc;
-          }, {});
+          }, {} as Record<string, any>);
         }
 
         return ObjectConfig.generate(selector, propConfigs);
@@ -66,14 +68,16 @@ export class ConfigFactory {
           transform
         );
       case 'union':
-        return UnionConfig.generate(union.map((cfg) => this.generate(cfg)));
+        return UnionConfig.generate(
+          union!.map((cfg) => this.generate(cfg) as ConfigWithSelector)
+        );
       default:
         return PrimitiveValueConfig.generate(selector, transform);
     }
   }
 
   private static generateSelector(
-    selector: any
+    selector: PlainConfigSelector
   ): ConfigWithSelector['selector'] {
     if (typeof selector === 'string') {
       return selector || null;
@@ -98,7 +102,11 @@ export class ConfigFactory {
       return null;
     }
 
-    throw new Error(`Unexpected selector type: ${typeof selector}. Selector: ${JSON.stringify(selector)}`);
+    throw new Error(
+      `Unexpected selector type: ${typeof selector}. Selector: ${JSON.stringify(
+        selector
+      )}`
+    );
   }
 
   private static generateTransform(
@@ -113,7 +121,7 @@ export class ConfigFactory {
     });
   }
 
-  private static detectExpectedType(conf: { [key: string]: any }) {
+  private static detectExpectedType(conf: PlainConfigObject) {
     if (conf.hasOwnProperty('properties') || conf.type === 'object') {
       return 'object';
     }
