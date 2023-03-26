@@ -1,5 +1,5 @@
-import { PrimitiveTypes, STRING } from "../core/primitive-types";
-import { Transformer } from "../core/transformer";
+import { PrimitiveTypes, STRING } from '../core/primitive-types';
+import { Transformer } from '../core/transformer';
 
 export default class HTMLTransformer extends Transformer {
   static getName(): string {
