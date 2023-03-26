@@ -14,7 +14,8 @@ export class ArrayConfig extends ConfigWithSelector {
 
   extract($: cheerio.Root, $parent: cheerio.Cheerio) {
     const $el = this.getSelectorMatches($parent, false);
-    let conf = this.items || PrimitiveValueConfig.generate('', this.transform);
+    let conf =
+      this.items || PrimitiveValueConfig.generate(null, this.transform);
     const extractOpts =
       conf instanceof ConfigWithSelector
         ? ({ elementAlreadyMatched: true } as ConfigWithSelectorExtractParams)
