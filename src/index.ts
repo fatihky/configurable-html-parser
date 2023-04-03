@@ -3,7 +3,10 @@ import { Config } from './config';
 
 export { ConfigFactory } from './config';
 
-export function extract($: cheerio.Root | string, config: Config): any {
+export function extract<T = unknown>(
+  $: cheerio.Root | string,
+  config: Config
+): T {
   let $root = $;
 
   if (typeof $root === 'string') {
