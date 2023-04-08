@@ -23,8 +23,10 @@ call `load(html)` again and again.
 
 ## Configuration
 
-- `selector` allows to filter the current HTML element with a CSS selector query. This is an optional property.
-- `type` can be `string`, `object` and `array` **explicitly**.
+- `selector` allows to filter the current HTML element with a CSS selector query. **optional**.
+- `type` can be `string`, `object` and `array`. **optional**.
+  if you set `properties`, then your `type` will be `object`.
+  if you set `items`, then your `type` will be `array`
 - `type` might become `number`, `boolean`, `object` and `array` **implicitly** by the `transform` parameter.
 - `transform` can be either:
   - name of one of the core transformers. see `Core Transformers` section below.
@@ -33,7 +35,7 @@ call `load(html)` again and again.
 - `properties: { [key: string]: Config }` implicitly sets `type` to `object`.
 - `items: Config` defines the configuration that will be used to extract data for every match of the selector.
 - `union: ConfigWithSelector[]` extracts data for the first matching configuration only. Extracts `null` if
-  none of the given configurations match. Can't be used with any other properties.
+  none of the given configurations match. Can't be used with any other properties. `selector` IS required in union items.
 - `constant: any` always extracts the provided value. Can't be used with any other properties.
 
 ## Selectors
