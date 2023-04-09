@@ -1,5 +1,5 @@
-import { load } from "cheerio";
-import { ConfigFactory } from "../../src";
+import { load } from 'cheerio';
+import { ConfigFactory } from '../../src';
 
 const SAMPLE = `
   <div id="root">
@@ -14,6 +14,13 @@ const SAMPLE = `
     <multiple-attributes foo="bar" baz="abc" other="attribute value">
       multiple attributes defined
     </multiple-attributes>
+
+    <list>
+      <item a="a1" b="b1" c="c1" />
+      <item a="a2" b="b2" c="c2" />
+      <item a="a3" b="b3" c="c3" />
+      <item a="a4" b="b4" c="c4" />
+    </list>
   </div>
 `;
 
@@ -56,7 +63,7 @@ transform: attr()`;
     const expected = {
       foo: 'bar',
       baz: 'abc',
-      other: 'attribute value'
+      other: 'attribute value',
     };
 
     expect(result).toMatchObject(expected);
@@ -81,9 +88,25 @@ transform: attr(foo, baz)`;
     const result = conf.extract($, $el);
     const expected = {
       foo: 'bar',
-      baz: 'abc'
+      baz: 'abc',
     };
 
     expect(result).toMatchObject(expected);
+  });
+
+  it('should select multiple attributes for array elems', () => {
+    const yaml = `
+selector: list item
+items: { transform: 'attr(a, b)' }`;
+    const conf = ConfigFactory.fromYAML(yaml);
+    const result = conf.extract($, $el);
+    const expected = [
+      { a: 'a1', b: 'b1' },
+      { a: 'a2', b: 'b2' },
+      { a: 'a3', b: 'b3' },
+      { a: 'a4', b: 'b4' },
+    ];
+
+    expect(result).toStrictEqual(expected);
   });
 });

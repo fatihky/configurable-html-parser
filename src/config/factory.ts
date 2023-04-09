@@ -26,7 +26,7 @@ export class ConfigFactory {
       throw new Error(
         `Invalid config provided. Got validation errors: ${JSON.stringify(
           errors
-        )}`
+        )}. Plain config: ${JSON.stringify(plain)}`
       );
     }
 

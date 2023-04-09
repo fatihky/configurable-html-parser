@@ -1,7 +1,8 @@
-import { Transformer } from "../core/transformer";
-import { Transformers } from "./transformers";
+import { Transformer } from '../core/transformer';
+import { Transformers } from './transformers';
 
-export const TRANSFORMER_DEFINITION_REGEX = '^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$';
+export const TRANSFORMER_DEFINITION_REGEX =
+  '^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$';
 
 const TRANSFORMER_NAME_REGEX = /^([\w-]+[^\(])/;
 const TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX = /\(([\w-]+\s*,?\s*)*\)/;
@@ -9,7 +10,8 @@ const TRANSFORMER_ARGUMENT_NAME_REGEX = /[\w-]+/g;
 
 export class TransformerFactory {
   static create(transform: string): Transformer {
-    const transformerName = TransformerFactory.extractTransformerName(transform);
+    const transformerName =
+      TransformerFactory.extractTransformerName(transform);
     const args = TransformerFactory.extractTransformerArgs(transform);
     const TransfomerImpl = Transformers.getByName(transformerName);
 
@@ -26,21 +28,25 @@ export class TransformerFactory {
     if (matches === null) {
       throw new Error(`Invalid transformer name: ${def}`);
     }
- 
-    return matches[0]
+
+    return matches[0];
   }
 
   private static extractTransformerArgs(def: string) {
-    const argsParanthesisMatch = def.match(TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX);
+    const argsParanthesisMatch = def.match(
+      TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX
+    );
 
     if (argsParanthesisMatch === null) {
       return [];
     }
 
-    const argMatches = argsParanthesisMatch[0].match(TRANSFORMER_ARGUMENT_NAME_REGEX);
+    const argMatches = argsParanthesisMatch[0].match(
+      TRANSFORMER_ARGUMENT_NAME_REGEX
+    );
 
     if (argMatches === null) {
-      return []
+      return [];
     }
 
     return argMatches;
