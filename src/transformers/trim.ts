@@ -15,6 +15,10 @@ export default class Trim extends Transformer {
   }
 
   transform(val: any, $el: cheerio.Cheerio) {
+    if (val === null) {
+      return null;
+    }
+
     if (typeof val === 'string') {
       return val.trim();
     }
