@@ -1,3 +1,5 @@
+/// <reference types="@types/cheerio/index.d.ts" />
+
 import { load } from 'cheerio';
 import { Config } from './config';
 

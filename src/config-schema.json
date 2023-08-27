@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
   "required": [],
-  "$id": "schema",
+  "$id": "config-schema.json",
   "oneOf": [
     {
       "$comment": "WithSelector",
@@ -47,10 +47,10 @@
           "type": "string",
           "enum": ["string", "object", "array", "union"]
         },
-        "items": { "$ref": "schema" },
+        "items": { "$ref": "config-schema.json" },
         "properties": {
           "type": "object",
-          "additionalProperties": { "$ref": "schema" }
+          "additionalProperties": { "$ref": "config-schema.json" }
         },
         "transform": {
           "oneOf": [
@@ -126,7 +126,7 @@
       "properties": {
         "union": {
           "type": "array",
-          "items": { "$ref": "schema" },
+          "items": { "$ref": "config-schema.json" },
           "minItems": 1
         }
       },
