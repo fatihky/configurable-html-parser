@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
   "required": [],
+  "$id": "schema",
   "oneOf": [
     {
       "$comment": "WithSelector",
@@ -46,10 +47,10 @@
           "type": "string",
           "enum": ["string", "object", "array", "union"]
         },
-        "items": { "$ref": "#/" },
+        "items": { "$ref": "schema" },
         "properties": {
           "type": "object",
-          "additionalProperties": { "$ref": "#/" }
+          "additionalProperties": { "$ref": "schema" }
         },
         "transform": {
           "oneOf": [
@@ -123,7 +124,11 @@
       "$comment": "Union",
       "type": "object",
       "properties": {
-        "union": { "type": "array", "items": { "$ref": "#/" }, "minItems": 1 }
+        "union": {
+          "type": "array",
+          "items": { "$ref": "schema" },
+          "minItems": 1
+        }
       },
       "required": ["union"],
       "additionalProperties": false
