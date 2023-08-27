@@ -1,5 +1,5 @@
 import Ajv from 'ajv';
-import { schema } from './config-schema';
+import * as schema from './config-schema.json';
 
 const ajv = new Ajv();
 
@@ -21,6 +21,6 @@ expect.extend({
     return {
       message: () => '',
       pass: true,
-    }
+    };
   },
 });

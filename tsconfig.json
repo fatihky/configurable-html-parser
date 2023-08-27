@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "moduleResolution": "node",
-    "target": "ESNext"
+    "target": "ESNext",
+    "resolveJsonModule": true
   }
 }
