@@ -1,6 +1,6 @@
-import { load } from "cheerio";
-import { readFileSync } from "fs";
-import { ConfigFactory } from "../../src";
+import { load } from 'cheerio';
+import { readFileSync } from 'fs';
+import { ConfigFactory } from '../../src';
 
 const yaml = `
 selector: .foo
@@ -11,9 +11,9 @@ describe('HTML', () => {
   it('CorrectlyExtractHTML', () => {
     const $ = load(readFileSync('tests/fixtures/basic.html').toString());
     const config = ConfigFactory.fromYAML(yaml);
-    const result = config.extract($, $.root());
+    const result = config.extract($, $.root(), { url: 'https://example.com' });
     const expected = $('.foo').html();
-  
+
     expect(result).toBe(expected);
   });
 });

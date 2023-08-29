@@ -1,5 +1,5 @@
-import { load } from "cheerio";
-import { ConfigFactory, extract } from "../src";
+import { load } from 'cheerio';
+import { ConfigFactory, extract } from '../src';
 
 const SAMPLE = `<div>
   some
@@ -13,7 +13,7 @@ describe('Extract', () => {
   it('SelectRootElement', () => {
     const $ = load(SAMPLE);
     const config = ConfigFactory.fromYAML(`{}`);
-    const result = extract($, config);
+    const result = extract($, config, 'https://example.com');
     const expected = $.root().text();
 
     expect(result).toBe(expected);
