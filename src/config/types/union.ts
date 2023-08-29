@@ -11,7 +11,7 @@ export default class UnionConfig extends Config {
   extract(
     $: cheerio.Root,
     $parent: cheerio.Cheerio,
-    opts?: ConfigWithSelectorExtractParams
+    opts: ConfigWithSelectorExtractParams
   ) {
     for (const config of this.configs) {
       const $el = config.getSelectorMatches($parent, false);
@@ -23,6 +23,7 @@ export default class UnionConfig extends Config {
       return config.extract($, $el, {
         ...(opts ? opts : {}),
         elementAlreadyMatched: true,
+        url: opts.url,
       });
     }
 

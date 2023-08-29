@@ -5,10 +5,9 @@ export abstract class Transformer {
     throw new Error('Not implemented');
   }
 
-  abstract inputType(): PrimitiveTypes
+  abstract inputType(): PrimitiveTypes;
 
-  abstract outputType(): PrimitiveTypes
+  abstract outputType(): PrimitiveTypes;
 
-  abstract transform(val: any, $el: cheerio.Cheerio): any
+  abstract transform(val: any, $el: cheerio.Cheerio, url: string): any;
 }
-

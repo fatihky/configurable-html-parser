@@ -15,7 +15,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
   extract(
     _$: cheerio.Root,
     $parent: cheerio.Cheerio,
-    opts?: ConfigWithSelectorExtractParams
+    opts: ConfigWithSelectorExtractParams
   ) {
     let val: any = null;
     let $el = this.getSelectorMatches(
@@ -31,7 +31,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
       return val;
     }
 
-    return this.transformVal(this.transform, val, $el);
+    return this.transformVal(this.transform, val, $el, opts.url);
   }
 
   static generate(
@@ -49,20 +49,21 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
   protected transformVal(
     transformer: Transform,
     val: any,
-    $el: cheerio.Cheerio
+    $el: cheerio.Cheerio,
+    url: string
   ): any {
     let transform = transformer;
 
     if (transform instanceof Transformer) {
-      return transform.transform(val, $el);
+      return transform.transform(val, $el, url);
     }
 
     return transform.reduce((acc, tr) => {
       if (typeof tr === 'string') {
-        return this.transformVal(tr, acc, $el);
+        return this.transformVal(tr, acc, $el, url);
       }
 
-      return tr.transform(acc, $el);
+      return tr.transform(acc, $el, url);
     }, val);
   }
 }

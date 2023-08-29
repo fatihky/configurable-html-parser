@@ -15,7 +15,7 @@ export class ObjectConfig extends ConfigWithSelector {
   extract(
     $: cheerio.Root,
     $parent: cheerio.Cheerio,
-    opts?: ConfigWithSelectorExtractParams
+    opts: ConfigWithSelectorExtractParams
   ) {
     let $el = this.getSelectorMatches(
       $parent,
@@ -32,7 +32,7 @@ export class ObjectConfig extends ConfigWithSelector {
     return keys.reduce((acc, key) => {
       const config = props[key];
 
-      acc[key] = config.extract($, $el);
+      acc[key] = config.extract($, $el, opts);
 
       return acc;
     }, {} as Record<string, any>);
