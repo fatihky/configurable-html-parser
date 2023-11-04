@@ -21,11 +21,25 @@ const SAMPLE = `
       <item a="a3" b="b3" c="c3" />
       <item a="a4" b="b4" c="c4" />
     </list>
+
+    <nested-list>
+      <nested-item>
+        <a a="a1">foo</a>
+      </nested-item>
+
+      <nested-item>
+        <a a="a2">bar</a>
+      </nested-item>
+
+      <nested-item>
+        <a a="a3">baz</a>
+      </nested-item>
+    </nested-list>
   </div>
 `;
 
 describe('AttrTransformer', () => {
-  let $, $el;
+  let $: cheerio.Root, $el: cheerio.Cheerio;
 
   beforeAll(() => {
     $ = load(SAMPLE);
@@ -106,6 +120,17 @@ items: { transform: 'attr(a, b)' }`;
       { a: 'a3', b: 'b3' },
       { a: 'a4', b: 'b4' },
     ];
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('nested list', async () => {
+    const yaml = `
+selector: nested-list nested-item
+items: { selector: 'a[a]', transform: attr(a) }`;
+    const conf = ConfigFactory.fromYAML(yaml);
+    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const expected = ['a1', 'a2', 'a3'];
 
     expect(result).toStrictEqual(expected);
   });

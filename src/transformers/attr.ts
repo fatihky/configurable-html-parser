@@ -29,7 +29,6 @@ export default class AttributeTransformer extends Transformer {
       default:
         return args.reduce((acc, arg) => {
           acc[arg] = AttributeTransformer.getAttrValue($el, arg);
-
           return acc;
         }, {} as Record<string, unknown>);
     }

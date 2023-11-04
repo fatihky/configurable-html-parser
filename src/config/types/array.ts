@@ -20,15 +20,7 @@ export class ArrayConfig extends ConfigWithSelector {
     const $el = this.getSelectorMatches($parent, false);
     let conf =
       this.items || PrimitiveValueConfig.generate(null, this.transform);
-    const extractOpts =
-      conf instanceof ConfigWithSelector
-        ? ({
-            ...opts,
-            elementAlreadyMatched: true,
-          } satisfies ConfigWithSelectorExtractParams)
-        : ({
-            ...opts,
-          } satisfies ExtractParams);
+    const extractOpts = { ...opts } satisfies ExtractParams;
 
     return $el.toArray().map((el) => {
       return conf.extract($, $(el), extractOpts);
