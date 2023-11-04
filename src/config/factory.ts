@@ -68,9 +68,7 @@ export class ConfigFactory {
           transform
         );
       case 'union':
-        return UnionConfig.generate(
-          union!.map((cfg) => this.generate(cfg) as ConfigWithSelector)
-        );
+        return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
       default:
         return PrimitiveValueConfig.generate(selector, transform);
     }
