@@ -6,7 +6,7 @@ const ajv = new Ajv();
 export class ConfigValidator {
   constructor(private readonly plain: unknown) {}
 
-  validate(): (typeof ajv)['errors'] {
+  validate(): Ajv['errors'] {
     ajv.validate(schema, this.plain);
 
     return ajv.errors;
