@@ -1,5 +1,11 @@
 import { PrimitiveTypes } from './primitive-types';
 
+export interface TransformParams {
+  val: unknown;
+  $el: cheerio.Cheerio;
+  url: string;
+}
+
 export abstract class Transformer {
   static getName(): string {
     throw new Error('Not implemented');
@@ -9,5 +15,5 @@ export abstract class Transformer {
 
   abstract outputType(): PrimitiveTypes;
 
-  abstract transform(val: any, $el: cheerio.Cheerio, url: string): any;
+  abstract transform(params: TransformParams): unknown;
 }

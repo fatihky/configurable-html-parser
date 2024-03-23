@@ -51,7 +51,7 @@ describe('AttrTransformer', () => {
 selector: '#root'
 transform: attr(id)`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = 'root';
 
     expect(result).toBe(expected);
@@ -62,7 +62,7 @@ transform: attr(id)`;
 selector: '#root'
 transform: attr(non-existing-attribute)`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = null;
 
     expect(result).toBe(expected);
@@ -73,7 +73,7 @@ transform: attr(non-existing-attribute)`;
 selector: multiple-attributes
 transform: attr()`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = {
       foo: 'bar',
       baz: 'abc',
@@ -88,7 +88,7 @@ transform: attr()`;
 selector: no-attributes
 transform: attr()`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = {};
 
     expect(result).toMatchObject(expected);
@@ -99,7 +99,7 @@ transform: attr()`;
 selector: multiple-attributes
 transform: attr(foo, baz)`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = {
       foo: 'bar',
       baz: 'abc',
@@ -113,7 +113,7 @@ transform: attr(foo, baz)`;
 selector: list item
 items: { transform: 'attr(a, b)' }`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = [
       { a: 'a1', b: 'b1' },
       { a: 'a2', b: 'b2' },
@@ -129,7 +129,7 @@ items: { transform: 'attr(a, b)' }`;
 selector: nested-list nested-item
 items: { selector: 'a[a]', transform: attr(a) }`;
     const conf = ConfigFactory.fromYAML(yaml);
-    const result = conf.extract($, $el, { url: 'https://example.com' });
+    const result = conf.extract({ $, $el, url: 'https://example.com' });
     const expected = ['a1', 'a2', 'a3'];
 
     expect(result).toStrictEqual(expected);

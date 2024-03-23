@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { PrimitiveTypes, STRING } from '../core/primitive-types';
-import { Transformer } from '../core/transformer';
+import { TransformParams, Transformer } from '../core/transformer';
 
 export default class ResolveTransformer extends Transformer {
   static getName(): string {
@@ -15,7 +15,7 @@ export default class ResolveTransformer extends Transformer {
     return STRING;
   }
 
-  transform(val: any, _$el: cheerio.Cheerio, url: string) {
+  transform({ val, url }: TransformParams) {
     if (typeof val === 'string') {
       return new URL(val, url).toString();
     }

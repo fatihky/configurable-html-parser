@@ -4,7 +4,7 @@ import { Transformers } from './transformers';
 export const TRANSFORMER_DEFINITION_REGEX =
   '^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$';
 
-const TRANSFORMER_NAME_REGEX = /^([\w-]+[^\(])/;
+const TRANSFORMER_NAME_REGEX = /^([\w-]+[^(])/;
 const TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX = /\(([\w-]+\s*,?\s*)*\)/;
 const TRANSFORMER_ARGUMENT_NAME_REGEX = /[\w-]+/g;
 

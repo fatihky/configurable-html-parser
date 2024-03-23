@@ -7,7 +7,7 @@ export { ConfigFactory } from './config';
 
 export function extract<T = unknown>(
   $: cheerio.Root | string,
-  config: Config,
+  config: Config<T>,
   url: string
 ): T {
   let $root = $;
@@ -16,5 +16,5 @@ export function extract<T = unknown>(
     $root = load($root);
   }
 
-  return config.extract($root, $root.root(), { url });
+  return config.extract({ $: $root, $el: $root.root(), url });
 }

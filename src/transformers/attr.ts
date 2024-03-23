@@ -1,5 +1,5 @@
 import { STRING } from '../core/primitive-types';
-import { Transformer } from '../core/transformer';
+import { TransformParams, Transformer } from '../core/transformer';
 
 export default class AttributeTransformer extends Transformer {
   constructor(private readonly args: string[]) {
@@ -18,7 +18,7 @@ export default class AttributeTransformer extends Transformer {
     return STRING;
   }
 
-  transform(val: any, $el: cheerio.Cheerio): any {
+  transform({ $el }: TransformParams): unknown {
     const { args } = this;
 
     switch (args.length) {

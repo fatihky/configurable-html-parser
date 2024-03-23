@@ -1,9 +1,9 @@
-import type { Config } from 'jest';
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-const config: Config = {
-  setupFilesAfterEnv: [
-    '<rootDir>/src/setup-jest-matchers.ts',
-  ],
+const config: JestConfigWithTsJest = {
+  preset: 'ts-jest',
+  setupFilesAfterEnv: ['<rootDir>/src/setup-jest-matchers.ts'],
+  testEnvironment: 'node',
 };
 
 export default config;

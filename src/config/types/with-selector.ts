@@ -7,11 +7,7 @@ export interface ConfigWithSelectorExtractParams extends ExtractParams {
 export default abstract class ConfigWithSelector extends Config {
   protected selector: string | null = null;
 
-  abstract extract(
-    $: cheerio.Root,
-    $el: cheerio.Cheerio,
-    opts: ConfigWithSelectorExtractParams
-  ): any;
+  abstract extract(params: ConfigWithSelectorExtractParams): unknown;
 
   getSelectorMatches(
     $: cheerio.Cheerio,

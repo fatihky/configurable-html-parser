@@ -1,5 +1,5 @@
 import { BOOLEAN, PrimitiveTypes, STRING } from '../core/primitive-types';
-import { Transformer } from '../core/transformer';
+import { TransformParams, Transformer } from '../core/transformer';
 
 export default class Exists extends Transformer {
   static getName(): string {
@@ -14,7 +14,7 @@ export default class Exists extends Transformer {
     return BOOLEAN;
   }
 
-  transform(val: any, $el: cheerio.Cheerio) {
+  transform({ $el }: TransformParams) {
     return $el.length > 0;
   }
 }

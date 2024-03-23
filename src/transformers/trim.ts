@@ -1,5 +1,5 @@
 import { PrimitiveTypes, STRING } from '../core/primitive-types';
-import { Transformer } from '../core/transformer';
+import { TransformParams, Transformer } from '../core/transformer';
 
 export default class Trim extends Transformer {
   static getName(): string {
@@ -14,7 +14,7 @@ export default class Trim extends Transformer {
     return STRING;
   }
 
-  transform(val: any, $el: cheerio.Cheerio) {
+  transform({ val }: TransformParams) {
     if (val === null) {
       return null;
     }

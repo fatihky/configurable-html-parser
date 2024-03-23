@@ -1,15 +1,15 @@
-import { Config, ExtractParams } from "../config";
+import { Config } from '../config';
 
 export default class ConstantConfig extends Config {
-  private constructor(private readonly val: any) {
+  private constructor(private readonly val: unknown) {
     super();
   }
 
-  extract($: cheerio.Root, $el: cheerio.Cheerio, opts?: ExtractParams | undefined) {
+  extract() {
     return this.val;
   }
 
-  static generate(val: any) {
+  static generate(val: unknown) {
     return new ConstantConfig(val);
   }
 }

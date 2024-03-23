@@ -12,18 +12,14 @@ export class ArrayConfig extends ConfigWithSelector {
     super();
   }
 
-  extract(
-    $: cheerio.Root,
-    $parent: cheerio.Cheerio,
-    opts: ConfigWithSelectorExtractParams
-  ) {
-    const $el = this.getSelectorMatches($parent, false);
-    let conf =
+  extract(params: ConfigWithSelectorExtractParams) {
+    const $el = this.getSelectorMatches(params.$el, false);
+    const conf =
       this.items || PrimitiveValueConfig.generate(null, this.transform);
-    const extractOpts = { ...opts } satisfies ExtractParams;
+    const extractOpts = { ...params } satisfies ExtractParams;
 
     return $el.toArray().map((el) => {
-      return conf.extract($, $(el), extractOpts);
+      return conf.extract({ ...extractOpts, $el: params.$(el) });
     });
   }
 

@@ -1,14 +1,12 @@
-import { load } from "cheerio";
-import ConfigWithSelector, { ConfigWithSelectorExtractParams } from "./with-selector";
+import { load } from 'cheerio';
+import ConfigWithSelector from './with-selector';
 
 class FakeWithSelector extends ConfigWithSelector {
-  constructor(selector: ConfigWithSelector['selector']) {
+  constructor(readonly selector: ConfigWithSelector['selector']) {
     super();
-
-    this.selector = selector;
   }
 
-  extract(_$: cheerio.Root, _$el: cheerio.Cheerio, _opts?: ConfigWithSelectorExtractParams) {
+  extract() {
     return '';
   }
 }

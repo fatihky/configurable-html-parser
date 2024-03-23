@@ -1,4 +1,4 @@
-import { Transformer } from '../../core/transformer';
+import { TransformParams, Transformer } from '../../core/transformer';
 import ConfigWithSelector, {
   ConfigWithSelectorExtractParams,
 } from './with-selector';
@@ -12,15 +12,11 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
     super();
   }
 
-  extract(
-    _$: cheerio.Root,
-    $parent: cheerio.Cheerio,
-    opts: ConfigWithSelectorExtractParams
-  ) {
-    let val: any = null;
-    let $el = this.getSelectorMatches(
-      $parent,
-      (opts && opts.elementAlreadyMatched) || false
+  extract(params: ConfigWithSelectorExtractParams) {
+    let val: unknown = null;
+    const $el = this.getSelectorMatches(
+      params.$el,
+      params.elementAlreadyMatched ?? false
     );
 
     if ($el.length > 0) {
@@ -31,7 +27,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
       return val;
     }
 
-    return this.transformVal(this.transform, val, $el, opts.url);
+    return this.transformVal(this.transform, { ...params, $el, val });
   }
 
   static generate(
@@ -48,22 +44,20 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
 
   protected transformVal(
     transformer: Transform,
-    val: any,
-    $el: cheerio.Cheerio,
-    url: string
+    transformParams: TransformParams
   ): any {
-    let transform = transformer;
+    const transform = transformer;
 
     if (transform instanceof Transformer) {
-      return transform.transform(val, $el, url);
+      return transform.transform(transformParams);
     }
 
     return transform.reduce((acc, tr) => {
       if (typeof tr === 'string') {
-        return this.transformVal(tr, acc, $el, url);
+        return this.transformVal(tr, { ...transformParams, val: acc });
       }
 
-      return tr.transform(acc, $el, url);
-    }, val);
+      return tr.transform({ ...transformParams, val: acc });
+    }, transformParams.val);
   }
 }

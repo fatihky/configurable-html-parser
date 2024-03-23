@@ -12,14 +12,11 @@ export class ObjectConfig extends ConfigWithSelector {
     super();
   }
 
-  extract(
-    $: cheerio.Root,
-    $parent: cheerio.Cheerio,
-    opts: ConfigWithSelectorExtractParams
-  ) {
-    let $el = this.getSelectorMatches(
+  extract(params: ConfigWithSelectorExtractParams) {
+    const $parent = params.$el;
+    const $el = this.getSelectorMatches(
       $parent,
-      (opts && opts.elementAlreadyMatched) || false
+      params.elementAlreadyMatched ?? false
     );
 
     if ($el.length === 0) {
@@ -32,7 +29,7 @@ export class ObjectConfig extends ConfigWithSelector {
     return keys.reduce((acc, key) => {
       const config = props[key];
 
-      acc[key] = config.extract($, $el, opts);
+      acc[key] = config.extract(params);
 
       return acc;
     }, {} as Record<string, any>);
