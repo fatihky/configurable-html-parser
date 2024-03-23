@@ -1,15 +1,15 @@
 import { parse } from 'yaml';
-import { ArrayConfig } from './types/array';
+import { Transformer } from '../core/transformer';
+import { TransformerFactory } from '../transformers/factory';
 import { Config } from './config';
+import { PlainConfigObject, PlainConfigSelector } from './plain-config';
+import { ArrayConfig } from './types/array';
+import ConstantConfig from './types/constant';
 import { ObjectConfig } from './types/object';
 import { PrimitiveValueConfig } from './types/primitive';
 import UnionConfig from './types/union';
-import { ConfigValidator } from './validator';
-import ConstantConfig from './types/constant';
-import { Transformer } from '../core/transformer';
-import { TransformerFactory } from '../transformers/factory';
 import ConfigWithSelector from './types/with-selector';
-import { PlainConfigObject, PlainConfigSelector } from './plain-config';
+import { ConfigValidator } from './validator';
 
 export class ConfigFactory {
   static fromYAML(yaml: string): Config {
@@ -47,30 +47,31 @@ export class ConfigFactory {
       : undefined;
 
     switch (expectedType) {
-      case 'constant':
-        return ConstantConfig.generate(constant);
-      case 'object':
-        let propConfigs: ObjectConfig['properties'] | undefined = undefined;
+    case 'constant':
+      return ConstantConfig.generate(constant);
+    case 'object': {
+      let propConfigs: ObjectConfig['properties'] | undefined = undefined;
 
-        if (properties) {
-          propConfigs = Object.keys(properties).reduce((acc, key) => {
-            acc[key] = this.generate(properties[key]);
+      if (properties) {
+        propConfigs = Object.keys(properties).reduce((acc, key) => {
+          acc[key] = this.generate(properties[key]);
 
-            return acc;
-          }, {} as Record<string, any>);
-        }
+          return acc;
+        }, {} as Record<string, Config>);
+      }
 
-        return ObjectConfig.generate(selector, propConfigs);
-      case 'array':
-        return ArrayConfig.generate(
-          selector,
-          items && this.generate(items),
-          transform
-        );
-      case 'union':
-        return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
-      default:
-        return PrimitiveValueConfig.generate(selector, transform);
+      return ObjectConfig.generate(selector, propConfigs);
+    }
+    case 'array':
+      return ArrayConfig.generate(
+        selector,
+        items && this.generate(items),
+        transform
+      );
+    case 'union':
+      return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
+    default:
+      return PrimitiveValueConfig.generate(selector, transform);
     }
   }
 
@@ -120,19 +121,19 @@ export class ConfigFactory {
   }
 
   private static detectExpectedType(conf: PlainConfigObject) {
-    if (conf.hasOwnProperty('properties') || conf.type === 'object') {
+    if ('properties' in conf || conf.type === 'object') {
       return 'object';
     }
 
-    if (conf.hasOwnProperty('items') || conf.type === 'array') {
+    if ('items' in conf || conf.type === 'array') {
       return 'array';
     }
 
-    if (conf.hasOwnProperty('union')) {
+    if ('union' in conf) {
       return 'union';
     }
 
-    if (conf.hasOwnProperty('constant')) {
+    if ('constant' in conf) {
       return 'constant';
     }
 

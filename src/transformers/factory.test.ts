@@ -1,4 +1,4 @@
-import { TRANSFORMER_DEFINITION_REGEX } from "./factory";
+import { TRANSFORMER_DEFINITION_REGEX } from './factory';
 
 describe('TransformerFactory', () => {
   it('TRANSFORMER_DEFINITION_REGEX', () => {

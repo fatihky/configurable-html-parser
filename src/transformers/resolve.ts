@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import { PrimitiveTypes, STRING } from '../core/primitive-types';
 import { TransformParams, Transformer } from '../core/transformer';
+import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class ResolveTransformer extends Transformer {
   static getName(): string {
@@ -15,12 +16,13 @@ export default class ResolveTransformer extends Transformer {
     return STRING;
   }
 
-  transform({ val, url }: TransformParams) {
+  transform({ property, val, url }: TransformParams) {
     if (typeof val === 'string') {
       return new URL(val, url).toString();
     }
 
-    throw new Error(
+    throw new InvalidParseInputError(
+      property,
       `ResolveTransformer.transform: invalid value type: ${typeof val}`
     );
   }

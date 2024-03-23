@@ -1,9 +1,25 @@
+import { Property, rootProp } from '../../core/property';
 import { Config } from '../config';
 import ConfigWithSelector, {
   ConfigWithSelectorExtractParams,
 } from './with-selector';
 
 export class ObjectConfig extends ConfigWithSelector {
+  static generate(
+    selector: ConfigWithSelector['selector'],
+    properties?: ObjectConfig['properties']
+  ): ObjectConfig {
+    const conf = new ObjectConfig();
+
+    conf.selector = selector;
+
+    if (properties) {
+      conf.properties = properties;
+    }
+
+    return conf;
+  }
+
   properties: {
     [key: string]: Config;
   } = {};
@@ -29,24 +45,20 @@ export class ObjectConfig extends ConfigWithSelector {
     return keys.reduce((acc, key) => {
       const config = props[key];
 
-      acc[key] = config.extract(params);
+      acc[key] = config.extract({
+        ...params,
+        property: this.makeProperty(params.property, key),
+      });
 
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, unknown>);
   }
 
-  static generate(
-    selector: ConfigWithSelector['selector'],
-    properties?: ObjectConfig['properties']
-  ): ObjectConfig {
-    const conf = new ObjectConfig();
-
-    conf.selector = selector;
-
-    if (properties) {
-      conf.properties = properties;
+  private makeProperty(property: Property, prop: string): Property {
+    if (property === rootProp) {
+      return prop;
     }
 
-    return conf;
+    return `${property}.${prop}`;
   }
 }

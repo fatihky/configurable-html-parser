@@ -45,7 +45,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
   protected transformVal(
     transformer: Transform,
     transformParams: TransformParams
-  ): any {
+  ): unknown {
     const transform = transformer;
 
     if (transform instanceof Transformer) {

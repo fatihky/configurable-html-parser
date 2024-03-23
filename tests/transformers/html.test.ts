@@ -1,6 +1,7 @@
 import { load } from 'cheerio';
 import { readFileSync } from 'fs';
 import { ConfigFactory } from '../../src';
+import { rootProp } from '../../src/core/property';
 
 const yaml = `
 selector: .foo
@@ -15,6 +16,7 @@ describe('HTML', () => {
       $,
       $el: $.root(),
       url: 'https://example.com',
+      property: rootProp,
     });
     const expected = $('.foo').html();
 

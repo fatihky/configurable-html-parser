@@ -2,6 +2,7 @@
 
 import { load } from 'cheerio';
 import { Config } from './config';
+import { rootProp } from './core/property';
 
 export { ConfigFactory } from './config';
 
@@ -16,5 +17,10 @@ export function extract<T = unknown>(
     $root = load($root);
   }
 
-  return config.extract({ $: $root, $el: $root.root(), url });
+  return config.extract({
+    $: $root,
+    $el: $root.root(),
+    property: rootProp,
+    url,
+  });
 }

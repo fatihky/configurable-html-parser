@@ -22,15 +22,15 @@ export default class AttributeTransformer extends Transformer {
     const { args } = this;
 
     switch (args.length) {
-      case 0:
-        return $el.attr();
-      case 1:
-        return AttributeTransformer.getAttrValue($el, args[0]);
-      default:
-        return args.reduce((acc, arg) => {
-          acc[arg] = AttributeTransformer.getAttrValue($el, arg);
-          return acc;
-        }, {} as Record<string, unknown>);
+    case 0:
+      return $el.attr();
+    case 1:
+      return AttributeTransformer.getAttrValue($el, args[0]);
+    default:
+      return args.reduce((acc, arg) => {
+        acc[arg] = AttributeTransformer.getAttrValue($el, arg);
+        return acc;
+      }, {} as Record<string, unknown>);
     }
   }
 

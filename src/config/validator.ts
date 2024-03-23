@@ -4,7 +4,7 @@ import * as schema from '../config-schema.json';
 const ajv = new Ajv();
 
 export class ConfigValidator {
-  constructor(private readonly plain: any) {}
+  constructor(private readonly plain: unknown) {}
 
   validate(): (typeof ajv)['errors'] {
     ajv.validate(schema, this.plain);

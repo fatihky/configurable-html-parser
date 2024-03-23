@@ -13,21 +13,21 @@ dependencies:
     version: 2.4.1
 
 devDependencies:
-  '@eslint/js':
-    specifier: ^8.57.0
-    version: 8.57.0
   '@types/cheerio':
     specifier: ^0.22.35
     version: 0.22.35
-  '@types/eslint__js':
-    specifier: ^8.42.3
-    version: 8.42.3
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
   '@types/node':
     specifier: ^20.11.30
     version: 20.11.30
+  '@typescript-eslint/eslint-plugin':
+    specifier: ^7.3.1
+    version: 7.3.1(@typescript-eslint/parser@7.3.1)(eslint@8.57.0)(typescript@5.4.3)
+  '@typescript-eslint/parser':
+    specifier: ^7.3.1
+    version: 7.3.1(eslint@8.57.0)(typescript@5.4.3)
   ajv:
     specifier: ^8.12.0
     version: 8.12.0
@@ -1145,19 +1145,6 @@ packages:
     resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==, tarball: https://registry.npmjs.org/@types/cheerio/-/cheerio-0.22.35.tgz}
     dependencies:
       '@types/node': 20.11.30
-    dev: true
-
-  /@types/eslint@8.56.6:
-    resolution: {integrity: sha512-ymwc+qb1XkjT/gfoQwxIeHZ6ixH23A+tCT2ADSA/DPVKzAjwYkTXBMCQ/f6fe4wEa85Lhp26VPeUxI7wMhAi7A==, tarball: https://registry.npmjs.org/@types/eslint/-/eslint-8.56.6.tgz}
-    dependencies:
-      '@types/estree': 1.0.5
-      '@types/json-schema': 7.0.15
-    dev: true
-
-  /@types/eslint__js@8.42.3:
-    resolution: {integrity: sha512-alfG737uhmPdnvkrLdZLcEKJ/B8s9Y4hrZ+YAdzUeoArBlSUERA2E87ROfOaS4jd/C45fzOoZzidLc1IPwLqOw==, tarball: https://registry.npmjs.org/@types/eslint__js/-/eslint__js-8.42.3.tgz}
-    dependencies:
-      '@types/eslint': 8.56.6
     dev: true
 
   /@types/estree@1.0.5:

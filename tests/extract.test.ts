@@ -12,7 +12,7 @@ describe('Extract', () => {
   // the outer-most element at beginning
   it('SelectRootElement', () => {
     const $ = load(SAMPLE);
-    const config = ConfigFactory.fromYAML(`{}`);
+    const config = ConfigFactory.fromYAML('{}');
     const result = extract($, config, 'https://example.com');
     const expected = $.root().text();
 

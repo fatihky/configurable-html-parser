@@ -141,7 +141,7 @@ describe('Union', () => {
   it('MustNotContainInvalidConfig', () => {
     expect({ union: [123] }).not.toBeValidConfig();
     expect({ union: [{ selector: 123 }] }).not.toBeValidConfig();
-  })
+  });
 
   it('MustForbidAnyOtherProps', () => {
     expect({ union: [{ selector: '.foo' }], selector: '.bar' }).not.toBeValidConfig();

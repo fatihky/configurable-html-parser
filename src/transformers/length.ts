@@ -1,5 +1,6 @@
 import { NUMBER, PrimitiveTypes, STRING } from '../core/primitive-types';
 import { TransformParams, Transformer } from '../core/transformer';
+import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class Length extends Transformer {
   static getName(): string {
@@ -14,11 +15,14 @@ export default class Length extends Transformer {
     return NUMBER;
   }
 
-  transform({ val }: TransformParams) {
+  transform({ property, val }: TransformParams) {
     if (typeof val === 'string' || Array.isArray(val)) {
       return val.length;
     }
 
-    throw new Error(`Length.transform: invalid value type: ${typeof val}`);
+    throw new InvalidParseInputError(
+      property,
+      `Length.transform: invalid value type: ${typeof val}`
+    );
   }
 }

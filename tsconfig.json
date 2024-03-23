@@ -4,6 +4,7 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "target": "ESNext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "outDir": "dist"
   }
 }
