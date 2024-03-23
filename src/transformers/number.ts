@@ -19,6 +19,10 @@ export default class NumberTransformer extends Transformer {
       return Number(val);
     }
 
-    throw new Error(`NumberTransformer.transform: invalid value type: ${typeof val}`);
+    throw new Error(
+      `NumberTransformer.transform: invalid value type: ${typeof val}. value=${JSON.stringify(
+        val
+      )}`
+    );
   }
 }
